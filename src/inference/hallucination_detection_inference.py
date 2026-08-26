@@ -153,7 +153,7 @@ def main():
 		vertex_project_id = require_environment_variable("VERTEX_AI_PROJECT_ID")
 		if config.seed:
 			llm = ChatVertexAI(
-				model="gemini-2.5-flash",  # model name
+				model=config.model_name,
 				temperature=1.0,           # sample
 				max_tokens=None,           # unlimited tokens (or specify a limit)
 				max_retries=6,             # retry on transient errors
@@ -163,7 +163,7 @@ def main():
 			)
 		else:
 			llm = ChatVertexAI(
-				model="gemini-2.5-flash",  # model name
+				model=config.model_name,
 				temperature=0,             # deterministic responses
 				max_tokens=None,           # unlimited tokens (or specify a limit)
 				max_retries=6,             # retry on transient errors
