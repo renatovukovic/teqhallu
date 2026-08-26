@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Run from this script's directory so the module imports work from any cwd.
+cd "$(dirname "$0")" || exit 1
+
+# These names are defined in inference/hallucination_detection_configs_dialhalu.py.
+config_names=(
+	"ragtruth_test_qa_baseline_gemini_flash_config"
+	"ragtruth_test_summary_baseline_gemini_flash_config"
+	"ragtruth_test_data2text_baseline_gemini_flash_config"
+	"ragtruth_test_qa_sqlite_pipeline_plus_direct_value_examples_gemini_flash_config"
+	"ragtruth_test_summary_sqlite_pipeline_plus_direct_value_examples_gemini_flash_config"
+	"ragtruth_test_data2text_sqlite_pipeline_plus_direct_value_examples_gemini_flash_config"
+)
+
+uv run python -u -m evaluation.evaluate_ragtruth \
+	--config_name "${config_names[@]}"

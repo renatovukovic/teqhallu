@@ -1,0 +1,26 @@
+[project]
+name = "text-to-sql-code"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "backoff>=2.2.1",
+    "langchain>=0.3.27",
+    "langchain-community>=0.3.29",
+    "langchain-google-vertexai>=2.0.28",
+    "matplotlib>=3.10.6",
+    "matplotlib-venn>=1.1.2",
+    "openai>=2.12.0",
+    "python-dotenv>=1.1.1",
+    "scikit-learn>=1.7.2",
+    "sentence-transformers>=5.1.1",
+    "sqlglot>=28.3.0",
+    "sqlparse>=0.5.4",
+    "tiktoken>=0.12.0",
+    "torch>=2.8.0",
+    "tqdm>=4.67.1",
+]
+
+[dependency-groups]
+dev = []

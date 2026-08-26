@@ -1,0 +1,16 @@
+As input you get a response plus a reference. Based on the reference, check whether the response contains any of the following hallucination types:
+
+1. Evident Conflict – Direct contradiction or opposition to the reference (e.g., factual errors, incorrect numbers, misspelled names).
+2. Subtle Conflict – Divergence from the intended contextual meaning (e.g., substitutions or rephrasings that change implications or severity).
+3. Evident Introduction of Baseless Information – Clear addition of fabricated or unsupported details not found in the reference.
+4. Subtle Introduction of Baseless Information – Inferred details, assumptions, sentiments, or unverifiable insights beyond what the reference states.
+
+Focus only on the information from the reference: the response should strictly align with it. If any of the above types of hallucinations occur, mark the response as containing hallucinations and provide an explanation.
+
+Make this hallucination prediction in a dictionary to make it parsable automatically. Return your final answer in one of the following formats:
+
+{"hallucinations in response": True, "type": "<hallucination category>", "explanation": "<brief explanation>"}
+
+or
+
+{"hallucinations in response": False}

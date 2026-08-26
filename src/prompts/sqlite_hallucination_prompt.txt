@@ -1,0 +1,40 @@
+Step 1 – Check existing tables in DB
+You are given a reference.
+Generate only SQL queries (valid for the Python sqlite3 package) to check whether the information from the reference is already present in the database. Here is the current list of tables in the DB: {db_result_input}.
+First, only generate the PRAGMA(table_info) queries for the relevant tables. Make sure to highlight SQL using ```sql ```.
+Here is the reference:
+
+Step 2 – Check existing info in DB
+Query results from queries above: {db_result_input}
+Generate only SQL queries (valid for the Python sqlite3 package) to check whether the information from the reference is already present in the database. Do this based on the current set of tables and their corresponding columns seen in the PRAGMA query results above. Generate SELECT queries now. Make sure to highlight SQL using ```sql ```.
+
+Step 3 – Insert missing info into DB
+Query results from queries above: {db_result_input}
+Based on the reference and the results of Step 2, generate only SQL queries to insert the missing information into the database. Do not duplicate existing data. If necessary create tables that are not yet in the DB before adding information. Make sure to highlight SQL using ```sql ```.
+
+Step 4 – Query info for response
+You are given a sampled response.
+Generate only SQL queries to retrieve all relevant information from the database that would be necessary to fact-check this response. Make sure to highlight SQL using ```sql ```.
+Here is the sampled response:
+
+Step 5 – Detect hallucinations
+
+Query results from queries above: {db_result_input}
+
+Using the original reference and the information retrieved from the DB, predict whether the response contains hallucinations. A hallucination is any information that contradicts or goes beyond what is supported by the reference. Specifically, hallucinations fall into one of the following categories:
+
+1. Evident Conflict – Direct contradiction or opposition to the reference (e.g., factual errors, incorrect numbers, misspelled names).
+2. Subtle Conflict – Divergence from the intended contextual meaning (e.g., substitutions or rephrasings that change implications or severity).
+3. Evident Introduction of Baseless Information – Clear addition of fabricated or unsupported details not found in the reference.
+4. Subtle Introduction of Baseless Information – Inferred details, assumptions, sentiments, or unverifiable insights beyond what the reference states.
+
+Focus only on the information from the reference: the response should strictly align with it. If any of the above types of hallucinations occur, mark the response as containing hallucinations and provide an explanation.
+
+- Do **not** mark minor wording differences, optional phrases ("if desired", "optionally"), or harmless stylistic changes as hallucinations.  
+- Only flag information as a hallucination if it clearly introduces a fact, claim, or detail that is **not supported or contradicted** by the reference.  
+- Be lenient about paraphrasing and small changes in phrasing.  
+
+Return your final answer in the following JSON format:
+{"hallucinations in response": True, "type": "<hallucination category>", "explanation": "<brief explanation>"}
+or
+{"hallucinations in response": False}

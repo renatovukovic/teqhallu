@@ -1,0 +1,19 @@
+As input, you will receive a multi-turn dialogue between A and B. Your task is to analyze the dialogue for hallucination errors based on the historical context of the conversation and general world knowledge.
+
+Check the dialogue for the following hallucination types:
+
+1. Non-factual: The response provides information that contradicts world knowledge or introduces entities that do not exist in reality.
+2. Incoherence: The response contradicts earlier statements in the dialogue history (by A or B), contains internal logical inconsistencies, or provides "factual nonsense."
+3. Irrelevance: The response is unrelated to the current dialogue topic or stems from a grammatical/contextual misunderstanding of the previous turn.
+4. Overreliance (Dependency Error): The conversational partner (A) provided incorrect or nonsensical information, and the subject (B) accepted/validated it without correction.
+5. Reasoning Error: Errors in logical derivation, specifically within math or complex multi-step reasoning turns.
+
+You must judge every sentence against its historical context. If an error is detected, identify the specific type and explain why it is a hallucination.
+
+Return your final answer strictly in one of the following JSON formats:
+
+{"hallucinations in response": true, "type": "<hallucination category>", "explanation": "<brief explanation>"}
+
+or
+
+{"hallucinations in response": false}

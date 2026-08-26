@@ -1,0 +1,61 @@
+Step 1 – Check existing tables in DB
+You are given a dialogue history containing previous turns between Speaker A and Speaker B.
+Generate only SQL queries (valid for the Python sqlite3 package) to check whether the entities, facts, or claims established in the dialogue history are already present in the database. Here is the current list of tables in the DB: {db_result_input}.
+First, only generate the PRAGMA(table_info) queries for the relevant tables. Make sure to highlight SQL using sql .
+Here is the dialogue history:
+
+Step 2 – Check existing info in DB
+Query results from queries above: {db_result_input}
+Generate only SQL queries (valid for the Python sqlite3 package) to check whether the information from the dialogue history is already present in the database. Do this based on the current set of tables and their corresponding columns seen in the PRAGMA query results above. Generate SELECT queries now. Make sure to highlight SQL using sql .
+
+Step 3 – Insert missing info into DB
+Query results from queries above: {db_result_input}
+Based on the dialogue history and the results of Step 2, generate only SQL queries to insert the missing conversational context, claims, and entities into the database. Do not duplicate existing data. If necessary, create tables that are not yet in the DB before adding information (e.g., tables for tracking user claims, AI responses, or established facts). Make sure to highlight SQL using sql .
+
+Step 4 – Query info for current turn
+You are given the current dialogue turn being evaluated.
+Generate only SQL queries to retrieve all relevant information from the database (historical context, previously stated facts, or established constraints) that would be necessary to verify this turn for consistency and factual accuracy. Make sure to highlight SQL using sql .
+Here is the current dialogue turn:
+
+Step 5 – Detect hallucinations
+
+Inputs for your evaluation:
+1. Database Context: {db_result_input}
+2. Initial Prediction: A preliminary judgment (True/False + explanation) based ONLY on the dialogue context.
+
+Your Task: Make the FINAL hallucination determination for the current dialogue turn.
+
+---
+
+### Hallucination Categories:
+1. Non-factual: Contradicts world knowledge or invents non-existent entities.
+2. Incoherence: Contradicts previous dialogue turns or is logically nonsensical.
+3. Irrelevance: Goes off-topic or misunderstands the previous turn.
+4. Overreliance: The user said something false/nonsensical, and the AI blindly agreed with it.
+5. Reasoning Error: Math or logic failures.
+
+---
+
+### STRICT EVALUATION RULES
+
+You act as a Validator. The Initial Prediction is your default answer. You may ONLY change it if the Database Context provides undeniable, objective proof that it is wrong. 
+
+Rule 1: If Initial Prediction is TRUE (Hallucination Detected)
+* DEFAULT ACTION: Keep it True. 
+* REQUIREMENT TO OVERRIDE: You may only change this to False if the Database Context explicitly proves the statement is 100% factual, logically consistent, and relevant. 
+* Note: If the initial explanation has minor errors, fix the explanation but keep the prediction True. Do not overrule a True prediction based on ambiguity.
+
+Rule 2: If Initial Prediction is FALSE (No Hallucination Detected)
+* DEFAULT ACTION: Keep it False.
+* REQUIREMENT TO OVERRIDE: You may only change this to True if the Database Context explicitly exposes a hidden error (e.g., a subtle contradiction with past turns or blindly agreeing with a user's false premise).
+
+---
+
+### Output Format
+Return your final answer in exactly one of the following JSON formats:
+
+{"hallucinations in response": true, "type": "<hallucination category>", "explanation": "<brief explanation>"}
+
+or
+
+{"hallucinations in response": false}

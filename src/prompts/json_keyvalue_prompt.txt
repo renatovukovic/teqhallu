@@ -1,0 +1,61 @@
+--- STEP 1: EXTRACT JSON KEY-VALUE PAIRS FROM REFERENCE ---
+
+You are given a reference text.
+Extract all factual entities, attributes, and relationships into a structured JSON dictionary using key-value pairs (e.g., {"entity_attribute": "value"}). 
+
+Make sure to extract all key facts and keep keys clear and descriptive. Highlight the JSON using ```json ```.
+
+Here is the reference:
+
+
+--- STEP 2: EXTRACT JSON KEY-VALUE PAIRS FROM RESPONSE ---
+
+You are given a sampled response.
+Extract all factual assertions from the response into a structured JSON dictionary using key-value pairs. Highlight the JSON using ```json ```.
+
+Here is the sampled response:
+
+
+--- STEP 3: COMPARE JSON KEY-VALUE PAIRS ---
+
+You are given the structured JSON representation of a reference text and a response.
+
+Reference JSON: {reference_json_input}
+Response JSON: {response_json_input}
+
+Compare the key-value pairs in the Response JSON against the Reference JSON to identify attributes that mismatch or are missing from the reference data.
+
+Highlight your comparison in a ```json ``` block containing a list of discrepancies.
+
+
+--- STEP 4: DETECT HALLUCINATIONS (FINAL DECISION) ---
+
+You are given a sampled response, the original reference, and the JSON key-value comparison results.
+
+JSON Comparison Results: {json_comparison_input}
+
+Additionally, you get:
+- An initial hallucination prediction, which is a preliminary judgment of whether the response contains hallucinations based on the reference and the response only.
+
+Your task is to make a final hallucination determination for the response.
+
+A hallucination is any information that contradicts or goes beyond what is supported by the reference. Hallucinations fall into one of the following categories:
+1. Evident Conflict – Direct contradiction or opposition to the reference (e.g., factual errors, incorrect numbers, misspelled names).
+2. Subtle Conflict – Divergence from the intended contextual meaning (e.g., substitutions or rephrasings that change implications or severity).
+3. Evident Introduction of Baseless Information – Clear addition of fabricated or unsupported details not found in the reference.
+4. Subtle Introduction of Baseless Information – Inferred details, assumptions, sentiments, or unverifiable insights beyond what the reference states.
+
+Evaluation Process:
+1. Consider the initial hallucination prediction as a starting signal.
+2. Independently verify the response against the reference and the JSON lookup results.
+3. Assess whether the initial prediction remains accurate after considering the structured JSON comparison.
+4. The final decision must be based on your full evaluation, not solely on the initial prediction.
+
+Output Format:
+Return your final answer in exactly one of the following JSON formats:
+
+{"hallucinations in response": True, "type": "<hallucination category>", "explanation": "<brief explanation>"}
+
+or
+
+{"hallucinations in response": False}

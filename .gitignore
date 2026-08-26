@@ -100,6 +100,17 @@ ipython_config.py
 #   commonly ignored for libraries.
 # uv.lock
 
+# Local credentials and environment overrides
+.env
+.env.*
+.DS_Store
+
+# Experiment logs and generated inference artifacts
+**/logs/
+**/inference_logs/
+**/inference/results/
+**/sql_interpretation/databases/
+
 # poetry
 #   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.
 #   This is especially recommended for binary packages to ensure reproducibility, and is more

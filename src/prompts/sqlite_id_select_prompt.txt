@@ -1,0 +1,135 @@
+Task Overview
+
+You are given: - A structured reference - A SQLite database (Python
+sqlite3 compatible) - A sampled response that claims to be based on the
+reference
+
+Your task is to support hallucination detection by generating SQL
+queries only, such that: - All relevant entities from the reference and
+response are mapped to database IDs - Hallucination detection can be
+performed solely by comparing the resulting ID sets produced in Steps 2
+and 3
+
+Strict formatting and behavioral constraints apply at every step.
+
+Step 1 – Inspect Database Schema
+
+Goal Identify the schema (columns and primary keys) of database tables
+that may contain entities mentioned or implied in the reference.
+
+Instructions - You are given a list of available tables:
+{db_result_input} - Select only tables that could reasonably contain
+data relevant to the reference - Generate only PRAGMA table_info()
+queries - Do not generate SELECT queries - Do not include explanations
+or comments
+
+Output Rules - Output only SQL - Wrap SQL in a single sql block -
+Queries must be valid for Python sqlite3
+
+Here is the reference that contains the question for the response and the passages with the reference information for the question:
+
+Step 2 – Resolve Reference to Canonical Database IDs
+
+Goal Produce a complete, minimal, and canonical set of database IDs
+representing all entities explicitly stated in the reference.
+
+This ID set will be used as the ground-truth baseline.
+
+Inputs - The reference text above - The schema and column values obtained from
+Step 1 and prior query results
+
+Here are the prior query results: 
+
+{db_result_input}
+
+Instructions - Generate SELECT queries only - Each query must: - Select
+only the primary key / ID column - Return IDs corresponding to entities
+explicitly present in the reference - Use exact matching where possible
+(no fuzzy logic unless unavoidable) - If an entity cannot be uniquely
+identified: - Select all candidate IDs that could correspond to it - Do
+not: - Infer missing entities - Filter based on assumptions - Retrieve
+non-ID columns
+
+Critical Requirement The union of all IDs returned in this step must
+represent exactly the reference content, no more and no less.
+
+Output Rules - Output only SQL - Wrap SQL in a single sql block - No
+comments, no explanations
+
+Step 3 – Resolve Sampled Response to Database IDs
+
+Goal Produce a complete and exhaustive set of database IDs corresponding
+to every factual entity, claim, or concrete detail stated in the sampled
+response.
+
+This ID set will be compared against the Step 2 ID set to detect
+hallucinations.
+
+Inputs - The sampled response - The same database schema and values used
+in Step 2
+
+Here are the prior query results for the reference: 
+
+{db_result_input}
+
+Instructions - Generate SELECT queries only - Each query must: - Select
+only the primary key / ID column - Retrieve IDs for every entity
+mentioned or implied by the response - Include: - All entities that
+overlap with the reference - Any additional entities, even if they
+appear irrelevant or minor - If an entity is ambiguous: - Select all
+plausible matching IDs - Do not: - Omit entities because they seem
+unimportant - Assume equivalence with reference entities unless enforced
+by the DB - Filter results to “match” the reference
+
+Critical Requirement The union of all IDs returned in this step must
+represent the full factual footprint of the response.
+
+Output Rules - Output only SQL - Wrap SQL in a single sql block - No
+comments, no explanations
+
+Here is the response to the question above using the information from passages in the reference:
+
+Step 4 – Hallucination Detection (ID-Guided with Textual Comparison)
+
+Here are the prior query results for the response:
+
+{db_result_input}
+
+Goal
+Determine whether the sampled response contains hallucinations by using:
+- Database ID-set comparison as the primary signal, and
+- Direct comparison of the response text with the reference as supporting evidence.
+
+How to Reason
+You are given:
+- R: The set of database IDs retrieved for entities supported by the reference (Step 2)
+- S: The set of database IDs retrieved for entities mentioned or implied by the response (Step 3)
+
+Use the ID sets to ground factual claims, but interpret them alongside the reference question and passages and response text.
+
+Decision Guidance
+- If the response introduces facts, entities, or claims that are not supported by the reference, and this is reflected by additional or conflicting IDs in S, then the response contains hallucinations.
+- If the response contains hallucinations that are evident from the text alone, even when ID evidence is incomplete or ambiguous, you may still mark hallucinations.
+- If S is mostly consistent with R, and any differences can be reasonably explained by:
+  - Paraphrasing or rewording
+  - Summarization of reference passages
+  - Database coverage limitations
+  then the response does not contain hallucinations.
+
+Do not be too strict, i.e. do not treat minor wording or phrasing differences, stylistic choices, or emphasis changes as hallucinations.
+
+Classification (if hallucinations are present)
+Select the most appropriate category:
+1. Evident Conflict – Direct contradiction of the reference
+2. Subtle Conflict – Meaningful change in implication or scope
+3. Evident Baseless Introduction – Clearly unsupported facts or entities
+4. Subtle Baseless Introduction – Plausible but unjustified additions
+
+Output Format (Strict)
+Return exactly one of the following JSON objects:
+
+{"hallucinations in response": true, "type": "<category>", "explanation": "<brief explanation>"}
+
+or
+
+{"hallucinations in response": false}

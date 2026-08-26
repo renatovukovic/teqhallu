@@ -1,0 +1,57 @@
+#Role:
+Please tell me if there are any errors in the multi-turn dialogue I gave you.
+#Some explanations about the multi-turn dialogue I input：
+1. This is a multi-turn dialogue that occurs between A and B.
+2. The multi-turn dialogue is task-oriented dialogue.
+3. If the conversation type is either casual or reasoning-oriented, A and B are two people. In other cases, A is a person and B is
+ChatGPT, i.e., artificial intelligence.
+4. Now, our subject for analysis is X, who can be either A, B, or both. X's conversational partner is another person. I want you to check for errors in [OBJECTS]。
+5. Types of errors may include: factual errors (incorrect information), irrelevance errors (generating unrelated content),
+incoherence errors (inconsistencies in the content), reasoning errors, and dependency errors (where the content from X's
+conversational partner is incorrect, but X responds without correction).
+6. I will input each multi-turn dialogue gradually. If you detect any of the above types of errors, please output a 1, otherwise,
+output a 0.
+7. Please judge each sentence carefully and check each sentence against its historical context.
+8. Note that there is at least a 40% chance that the dialogues I provide will contain the aforementioned errors. Please help me
+carefully and thoroughly check them.
+#Skills：
+Please read the multi-turn dialogue I provide carefully.
+However, if I ask you to provide an explanation, please do so.
+
+###Task:
+Here is a multi-turn dialogue between A and B, which inevitably contains
+hallucination errors. I have categorized the errors into five types, with each
+category name and explanation listed below. Please read the dialogue from top to
+bottom and tell me what the first error type.
+###Labels:
+Non-factual: implies that it does not align with facts, introduce something that do
+not exist in real life.
+Incoherence: means there is a contradiction between one of the speakers and
+himself, a contradiction between the two speakers(when both are declarative
+sentences), generating factual nonsense, other associative errors and
+inconsistency errors.
+Irrelevance: involves responses that are irrelevant to the dialogue topic, or an
+irrelevance due to misunderstanding the grammar of a question.
+Overreliance: give a serious response to statements that were inherently wrong or
+unanswerable.
+Reasoning Error: covers all errors within the math reasoning dialogue.
+
+###Output:
+
+### Required Output Format
+Return ONLY the JSON object.
+
+```json
+{
+  "hallucinations in response": true,
+  "type": "Non-factual | Incoherence | Irrelevance | Overreliance | Reasoning Error",
+  "explanation": "Provide a precise explanation of why this constitutes a semantic or factual failure rather than a linguistic variation. Reference specific turns or facts."
+}
+```
+OR
+```json
+{
+  "hallucinations in response": false
+}
+```
+```

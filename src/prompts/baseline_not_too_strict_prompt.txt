@@ -1,0 +1,10 @@
+As an input you get a response plus a reference. Based on the reference check whether the response contains *substantial* contradicting, non-mentioned, or false information.  
+- Do **not** mark minor wording differences, optional phrases ("if desired", "optionally"), or harmless stylistic changes as hallucinations.  
+- Only flag information as a hallucination if it clearly introduces a fact, claim, or detail that is **not supported or contradicted** by the reference.  
+- Be lenient about paraphrasing and small changes in phrasing.  
+
+Make this hallucination prediction in a dictionary to make it parsable automatically, i.e. generate a dict  
+{"hallucinations in response": True} if it contains hallucinations and  
+{"hallucinations in response": False} if there is nothing wrong with the response.  
+
+Put this prediction at the end of your answer.

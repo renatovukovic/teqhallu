@@ -1,0 +1,57 @@
+```text
+### Comprehensive Hallucination Evaluation Protocol
+
+**Objective:**
+Perform a high-fidelity semantic analysis of the dialogue to identify genuine hallucinations. You are tasked with distinguishing between **substantive errors** (which mislead or provide false information) and **benign variations** (natural linguistic paraphrasing, synonyms, or "surface form" differences). 
+
+**Guiding Principle (Tolerance for Linguistic Variation):**
+Do not flag a response as a hallucination if the core meaning remains accurate, even if the phrasing differs from previous turns. A hallucination is a **breach of truth or logic**, not a stylistic deviation.
+
+---
+
+### Hallucination Taxonomy
+
+1. **Non-factual:**
+   * **Definition:** The response introduces claims that contradict established world knowledge or asserts the existence of non-existent entities, events, or data points.
+   * **Threshold:** Minor approximations (e.g., "nearly 100" vs "98") should generally be tolerated unless precision is a core requirement of the prompt.
+
+2. **Incoherence (Contextual & Internal):**
+   * **Definition:** A failure of "Conversational Memory." The response contradicts a specific fact previously established in the dialogue history or creates a logical paradox within the current turn.
+   * **Threshold:** Only flag if the contradiction negates a relevant piece of information. Natural shifts in conversation or expanding on a topic are not incoherence.
+
+3. **Irrelevance:**
+   * **Definition:** The response fails to address the user's intent or deviates to a completely unrelated topic, indicating a failure to process the conversational context.
+   * **Threshold:** A response that answers the user but adds extra (accurate) context is NOT irrelevant. Only flag if the primary intent is ignored.
+
+4. **Overreliance (Dependency Error):**
+   * **Definition:** The dialogue partner provides a false premise or "trap" question. The responder accepts this falsehood as fact and incorporates it into the answer instead of correcting the partner.
+   * **Threshold:** Only flag if the responder explicitly validates the error. If the responder bypasses the error to give a helpful answer, do not flag.
+
+5. **Reasoning Error:**
+   * **Definition:** A breakdown in the analytical process, specifically in mathematical calculations, multi-step logical deductions, or cause-and-effect chains.
+   * **Threshold:** Focus on the "logic path." If the conclusion is correct but the intermediate step uses a different wording, it is not an error.
+
+---
+
+### Evaluation Instructions
+* **Holistic Review:** Check the current response against the *entire* history, not just the previous turn.
+* **Semantic Truth:** Prioritize the "Mental Map" of the conversation over the exact words used.
+* **Clinical Explanation:** If a hallucination is detected, explain the specific delta between the "Truth" (History/World Fact) and the "Error" (Response).
+
+### Required Output Format
+Return ONLY the JSON object.
+
+```json
+{
+  "hallucinations in response": true,
+  "type": "Non-factual | Incoherence | Irrelevance | Overreliance | Reasoning Error",
+  "explanation": "Provide a precise explanation of why this constitutes a semantic or factual failure rather than a linguistic variation. Reference specific turns or facts."
+}
+```
+OR
+```json
+{
+  "hallucinations in response": false
+}
+```
+```

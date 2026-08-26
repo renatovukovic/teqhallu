@@ -1,0 +1,62 @@
+--- STEP 1: DECOMPOSE RESPONSE INTO ATOMIC CLAIMS ---
+
+You are given a sampled response. 
+Decompose the response into a list of standalone, atomic claims. Each claim should represent a single testable fact or assertion.
+
+Output Format:
+Return the claims as a JSON list of strings:
+["Claim 1", "Claim 2", "Claim 3"]
+
+Here is the sampled response:
+
+
+--- STEP 2: VERIFY EACH CLAIM AGAINST REFERENCE ---
+
+You are given a list of atomic claims extracted from a model response, alongside the reference text.
+
+Atomic claims: {claims_input}
+
+For each claim, determine whether it is supported by the reference text or if it represents a hallucination (contradicts the reference or adds unsupported information).
+
+Here is the reference:
+{reference_input}
+
+Output Format:
+Return a JSON list of objects with the status and explanation for each claim:
+[
+  {"claim": "Claim 1", "status": "SUPPORTED", "explanation": "..."},
+  {"claim": "Claim 2", "status": "HALLUCINATION", "explanation": "..."}
+]
+
+
+--- STEP 3: DETECT HALLUCINATIONS (FINAL DECISION) ---
+
+You are given a sampled response, a reference text, and claim-level verification results.
+
+Verification Results: {verification_results_input}
+
+Additionally, you get:
+- An initial hallucination prediction, which is a preliminary judgment of whether the response contains hallucinations based on the reference and the response only.
+
+Your task is to make a final hallucination determination for the response.
+
+A hallucination is any information that contradicts or goes beyond what is supported by the reference. Hallucinations fall into one of the following categories:
+1. Evident Conflict – Direct contradiction or opposition to the reference (e.g., factual errors, incorrect numbers, misspelled names).
+2. Subtle Conflict – Divergence from the intended contextual meaning (e.g., substitutions or rephrasings that change implications or severity).
+3. Evident Introduction of Baseless Information – Clear addition of fabricated or unsupported details not found in the reference.
+4. Subtle Introduction of Baseless Information – Inferred details, assumptions, sentiments, or unverifiable insights beyond what the reference states.
+
+Evaluation Process:
+1. Consider the initial hallucination prediction as a starting signal.
+2. Independently verify the response against the reference and the claim-level verification results.
+3. Assess whether the initial prediction remains accurate after considering the claim verification results.
+4. The final decision must be based on your full evaluation, not solely on the initial prediction.
+
+Output Format:
+Return your final answer in exactly one of the following JSON formats:
+
+{"hallucinations in response": True, "type": "<hallucination category>", "explanation": "<brief explanation>"}
+
+or
+
+{"hallucinations in response": False}

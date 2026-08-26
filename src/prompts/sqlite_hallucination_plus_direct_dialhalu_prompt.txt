@@ -1,0 +1,61 @@
+Step 1 – Check existing tables in DB
+You are given a dialogue history containing previous turns between Speaker A and Speaker B.
+Generate only SQL queries (valid for the Python sqlite3 package) to check whether the entities, facts, or claims established in the dialogue history are already present in the database. Here is the current list of tables in the DB: {db_result_input}.
+First, only generate the PRAGMA(table_info) queries for the relevant tables. Make sure to highlight SQL using sql .
+Here is the dialogue history:
+
+Step 2 – Check existing info in DB
+Query results from queries above: {db_result_input}
+Generate only SQL queries (valid for the Python sqlite3 package) to check whether the information from the dialogue history is already present in the database. Do this based on the current set of tables and their corresponding columns seen in the PRAGMA query results above. Generate SELECT queries now. Make sure to highlight SQL using sql .
+
+Step 3 – Insert missing info into DB
+Query results from queries above: {db_result_input}
+Based on the dialogue history and the results of Step 2, generate only SQL queries to insert the missing conversational context, claims, and entities into the database. Do not duplicate existing data. If necessary, create tables that are not yet in the DB before adding information (e.g., tables for tracking user claims, AI responses, or established facts). Make sure to highlight SQL using sql. The info in the DB should be usable for handling the dialogue topic successfully and make sure to track all the information that could be in the dialogue state as well.
+
+Step 4 – Query info for current turn
+You are given the current dialogue turn being evaluated.
+Generate only SQL queries to retrieve all relevant information from the database (historical context, previously stated facts, or established constraints) that would be necessary to verify this turn for consistency and factual accuracy. Make sure to highlight SQL using sql .
+Here is the current dialogue turn:
+
+Step 5 – Detect Hallucinations
+
+Objective: Perform an independent analysis of the current dialogue between the user A and the system B above to identify hallucinations. Use the Database Context and the provided Initial Prediction as references, but prioritize the logical flow of the dialogue itself.
+
+Inputs:
+1. The Task-oriented Dialogue above.
+2. Database Context: {db_result_input}
+3. Initial Prediction: A preliminary judgment (True/False + explanation) for reference.
+
+---
+
+### Hallucination Categories:
+1. Non-factual: The response contradicts world knowledge or introduces entities that do not exist in reality.
+2. Incoherence: The response contradicts earlier statements in the dialogue history (by A or B), contains internal logical inconsistencies, or provides "factual nonsense."
+3. Irrelevance: The response is unrelated to the current dialogue topic or stems from a grammatical/contextual misunderstanding of the previous turn.
+4. Overreliance (Dependency Error): The conversational partner (A) provided incorrect or nonsensical information, and the subject (B) accepted/validated it without correction.
+5. Reasoning Error: Errors in logical derivation, specifically within math or complex multi-step reasoning turns.
+
+---
+
+### Execution Instructions:
+
+1. Independent Judgment: You are the final arbiter. Analyze every sentence against its historical context and the Database. Use the Initial Prediction as a second opinion, but do not be afraid to override it if your analysis shows it missed an error or flagged a valid statement incorrectly.
+
+2. Focus on Dialogue Integrity: Prioritize how the response fits into the conversation history. A response is not a hallucination just because it is phrased differently than expected; it is a hallucination if it breaks factual or logical continuity.
+
+3. Strict Categorization: Check every claim against the five categories above. Be especially mindful of "Overreliance"—ensure the speaker did not blindly accept a false premise from the user.
+
+4. Decisive Action: 
+   - If you detect a clear violation of any category, the result is TRUE.
+   - If the response is factually sound and consistent with the conversation, the result is FALSE.
+
+---
+
+### Output Format
+Return your final answer strictly in one of the following JSON formats:
+
+{"hallucinations in response": true, "type": "<hallucination category>", "explanation": "<brief explanation>"}
+
+or
+
+{"hallucinations in response": false}

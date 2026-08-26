@@ -1,0 +1,13 @@
+Using the original reference and the information retrieved from the DB, predict whether the response contains hallucinations. A hallucination is any information that contradicts or goes beyond what is supported by the reference. Specifically, hallucinations fall into one of the following categories:
+
+1. Evident Conflict – Direct contradiction or opposition to the reference (e.g., factual errors, incorrect numbers, misspelled names).
+2. Subtle Conflict – Divergence from the intended contextual meaning (e.g., substitutions or rephrasings that change implications or severity).
+3. Evident Introduction of Baseless Information – Clear addition of fabricated or unsupported details not found in the reference.
+4. Subtle Introduction of Baseless Information – Inferred details, assumptions, sentiments, or unverifiable insights beyond what the reference states.
+
+Focus only on the information from the reference: the response should strictly align with it. If any of the above types of hallucinations occur, mark the response as containing hallucinations and provide an explanation.
+
+Return your final answer in the following JSON format:
+{"hallucinations in response": True, "type": "<hallucination category>", "explanation": "<brief explanation>"}
+or
+{"hallucinations in response": False}
