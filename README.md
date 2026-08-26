@@ -167,19 +167,42 @@ uv run python -u -m evaluation.evaluate_ragtruth \
 
 For each config, `evaluation/evaluate_ragtruth.py` reports accuracy, precision, recall, F1, ROC-AUC when both classes are present, and the true-negative/false-positive/false-negative/true-positive counts. When multiple configs are supplied, it also prints a LaTeX-ready row containing per-config precision, recall, F1, and macro averages.
 
-The older `run_evaluation_dialhalu.sh` filename is retained for compatibility with existing commands; its current contents invoke the RAGTruth evaluator. The same applies to the similarly named inference runner. DiaHalu evaluation itself remains available through `evaluation/evaluate_dialhalu.py`, but its configs and data are separate.
-
 ## DiaHalu
 
 The DiaHalu benchmark file is at `Data/DiaHalu-main/DiaHalu_Bench.jsonl`. Its source documentation is in `Data/DiaHalu-main/README.md`. DiaHalu configs and the evaluator are separate from the RAGTruth workflow:
 
+The DiaHalu runners use the eight Gemini Flash configurations below, defined in `src/inference/hallucination_detection_configs_dialhalu.py`:
+
+| Method | Task configurations |
+| --- | --- |
+| Baseline | `dialhalu_test_reasoning_baseline_gemini_flash_config`, `dialhalu_test_world_knowledge_baseline_gemini_flash_config`, `dialhalu_test_task_oriented_baseline_gemini_flash_config`, `dialhalu_test_chit_chat_baseline_gemini_flash_config` |
+| SQLite pipeline with column values and direct prediction | `dialhalu_test_reasoning_sqlite_pipeline_plus_direct_value_examples_gemini_flash_config`, `dialhalu_test_world_knowledge_sqlite_pipeline_plus_direct_value_examples_gemini_flash_config`, `dialhalu_test_task_oriented_sqlite_pipeline_plus_direct_value_examples_gemini_flash_config`, `dialhalu_test_chit_chat_sqlite_pipeline_plus_direct_value_examples_gemini_flash_config` |
+
+Run all eight DiaHalu inference experiments sequentially:
+
 ```bash
 cd path/to/teqhallu/src
-uv run python -u -m evaluation.evaluate_dialhalu \
-	--config_name dialhalu_test_task_oriented_baseline_gemini_flash_config
+./run_hallucination_detection_dialhalu.sh
 ```
 
-Check `src/inference/hallucination_detection_configs_dialhalu.py` for the exact DiaHalu config names available in the current checkout.
+Evaluate the generated DiaHalu result files:
+
+```bash
+cd path/to/teqhallu/src
+./run_evaluation_dialhalu.sh
+```
+
+To run one configuration directly, pass its exact name to the corresponding module:
+
+```bash
+uv run python -u -m inference.hallucination_detection_inference \
+	--config_name dialhalu_test_reasoning_baseline_gemini_flash_config
+
+uv run python -u -m evaluation.evaluate_dialhalu \
+	--config_name dialhalu_test_reasoning_baseline_gemini_flash_config
+```
+
+Additional DiaHalu configurations for Llama, Qwen, GPT-OSS, Gemini 1.5 Pro, GPT-4, and the MultiWOZ ontology are also defined in `src/inference/hallucination_detection_configs_dialhalu.py` and can be run by supplying their exact names.
 
 ## Reproducibility notes
 
