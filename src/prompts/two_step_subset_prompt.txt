@@ -1,0 +1,39 @@
+Step 1 SQL Representation
+- Convert both the reference text and the response text into SQL-style structured representations.
+- Each representation should capture entities, attributes, and relationships expressed in the text.
+- Format as simple CREATE TABLE statements (schema + values) to make the comparison explicit.
+
+Example:
+Reference: "The capital of France is Paris."
+```sql
+CREATE TABLE reference (
+   country TEXT,
+   capital TEXT
+);
+
+INSERT INTO reference VALUES ('France', 'Paris');
+```
+
+Response: "The capital of France is Lyon."
+```sql
+CREATE TABLE response (
+   country TEXT,
+   capital TEXT
+);
+
+INSERT INTO response VALUES ('France', 'Lyon');
+```
+
+Step 2 Subset Verification
+
+Compare the reference SQL representation with the response SQL representation.
+Determine whether all information in the response is fully contained within the reference.
+If the response contains only information present in the reference, it is a subset.
+If the response contains any information not present in the reference, it is not a subset.
+
+Make a subset prediction in a machine-parsable dictionary:
+
+If the response is a subset of the reference:
+{"response is subset of reference": True}
+If the response contains information outside the reference:
+{"response is subset of reference": False}

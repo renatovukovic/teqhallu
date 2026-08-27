@@ -262,7 +262,7 @@ def main():
 			direct_prediction_filename = direct_prediction_filename.replace("gemini_15pro", "gemini_flash")
 			direct_prediction_filename = direct_prediction_filename.replace("gpt4", "gemini_flash")
 		else:
-			direct_prediction_filename = f"{results_directory}/{args.config_name.replace('sqlite_pipeline_plus_direct_value_examples', 'baseline_less_strict')}_responses.pt"
+			direct_prediction_filename = f"{results_directory}/{args.config_name.replace('sqlite_pipeline_plus_direct_value_examples', 'baseline')}_responses.pt"
 		direct_prediction_dict = torch.load(direct_prediction_filename)
 
 

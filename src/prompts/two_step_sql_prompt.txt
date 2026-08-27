@@ -1,0 +1,40 @@
+Step 1 SQL Representation
+- Convert both the reference text and the response text into SQL-style structured representations.
+- Each representation should capture entities, attributes, and relationships expressed in the text.
+- Format as simple CREATE TABLE statements (schema + values) to make the comparison explicit.
+
+Example:
+Reference: "The capital of France is Paris."
+```sql
+CREATE TABLE reference (
+   country TEXT,
+   capital TEXT
+);
+
+INSERT INTO reference VALUES ('France', 'Paris');
+```
+
+Response: "The capital of France is Lyon."
+```sql
+CREATE TABLE response (
+   country TEXT,
+   capital TEXT
+);
+
+INSERT INTO response VALUES ('France', 'Lyon');
+```
+
+Step 2 Hallucination Detection
+- Compare the reference SQL representation with the response SQL representation.
+- Identify if the response introduces:
+  1. Contradictions (values that conflict with the reference)
+  2. Non-mentioned details (information absent in the reference)
+  3. False information (incorrect facts relative to the reference)
+
+- Make a hallucination prediction in a machine-parsable dictionary and add an explanation if there is a hallucination:
+
+If hallucinations are present:
+{"hallucinations in response": True}
+
+If no hallucinations are found:
+{"hallucinations in response": False}
