@@ -176,7 +176,7 @@ The DiaHalu runners use the eight Gemini Flash configurations below, defined in 
 | Method | Task configurations |
 | --- | --- |
 | Baseline | `dialhalu_test_reasoning_baseline_gemini_flash_config`, `dialhalu_test_world_knowledge_baseline_gemini_flash_config`, `dialhalu_test_task_oriented_baseline_gemini_flash_config`, `dialhalu_test_chit_chat_baseline_gemini_flash_config` |
-| SQLite pipeline with column values and direct prediction | `dialhalu_test_reasoning_sqlite_pipeline_plus_direct_value_examples_gemini_flash_config`, `dialhalu_test_world_knowledge_sqlite_pipeline_plus_direct_value_examples_gemini_flash_config`, `dialhalu_test_task_oriented_sqlite_pipeline_plus_direct_value_examples_gemini_flash_config`, `dialhalu_test_chit_chat_sqlite_pipeline_plus_direct_value_examples_gemini_flash_config` |
+| Full TeQHallu | `dialhalu_test_reasoning_sqlite_pipeline_plus_direct_value_examples_gemini_flash_config`, `dialhalu_test_world_knowledge_sqlite_pipeline_plus_direct_value_examples_gemini_flash_config`, `dialhalu_test_task_oriented_sqlite_pipeline_plus_direct_value_examples_gemini_flash_config`, `dialhalu_test_chit_chat_sqlite_pipeline_plus_direct_value_examples_gemini_flash_config` |
 
 Run all eight DiaHalu inference experiments sequentially:
 
