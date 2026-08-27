@@ -8,7 +8,6 @@ The repository contains inference pipelines and evaluation code for hallucinatio
 ```text
 Data/
 	ragtruth_data/                 RAGTruth JSONL files
-	DiaHalu-main/                  DiaHalu benchmark and documentation
 src/
 	pyproject.toml                 uv project definition and dependencies
 	inference/                     configs, inference code, prompts, and results
@@ -169,7 +168,17 @@ For each config, `evaluation/evaluate_ragtruth.py` reports accuracy, precision, 
 
 ## DiaHalu
 
-The DiaHalu benchmark file is at `Data/DiaHalu-main/DiaHalu_Bench.jsonl`. Its source documentation is in `Data/DiaHalu-main/README.md`. DiaHalu configs and the evaluator are separate from the RAGTruth workflow:
+Download the DiaHalu benchmark from the upstream repository before running
+these experiments:
+
+```bash
+cd path/to/teqhallu
+git clone https://github.com/141forever/DiaHalu Data/DiaHalu-main
+```
+
+The experiments expect `DiaHalu_Bench.jsonl` at
+`Data/DiaHalu-main/DiaHalu_Bench.jsonl`. DiaHalu configs and the evaluator are
+separate from the RAGTruth workflow:
 
 The DiaHalu runners use the eight Gemini Flash configurations below, defined in `src/inference/hallucination_detection_configs_dialhalu.py`:
 
@@ -218,11 +227,10 @@ the hallucination-detection experiments. The RAGTruth files are accompanied by
 `Data/ragtruth_data/LICENSE.txt`, which contains the MIT License and credits
 Particle Media. That license should be retained when redistributing those files.
 
-The DiaHalu benchmark and its documentation are included from the upstream
-DiaHalu project in `Data/DiaHalu-main/`. The upstream documentation asks users to
-cite the DiaHalu paper. No separate DiaHalu dataset license is included here, so
-check the upstream project's current terms before redistributing the benchmark or
-any derived dataset.
+The DiaHalu benchmark is not included in this repository. Download it from the
+upstream [DiaHalu project](https://github.com/141forever/DiaHalu) and follow its
+current documentation and licensing terms. The upstream documentation asks
+users to cite the DiaHalu paper.
 
 ## Citation
 
