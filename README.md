@@ -211,6 +211,19 @@ Additional DiaHalu configurations for Llama, Qwen, GPT-OSS, Gemini 1.5 Pro, GPT-
 - Existing `.pt` files in `src/inference/results/` can be evaluated without rerunning inference, provided their config names match the selected evaluator arguments.
 - Keep API credentials outside version control and keep generated logs and databases with the experiment artifacts when preserving a run.
 
+## Dataset use and licensing
+
+This project uses the RAGTruth and DiaHalu benchmarks only as evaluation data for
+the hallucination-detection experiments. The RAGTruth files are accompanied by
+`Data/ragtruth_data/LICENSE.txt`, which contains the MIT License and credits
+Particle Media. That license should be retained when redistributing those files.
+
+The DiaHalu benchmark and its documentation are included from the upstream
+DiaHalu project in `Data/DiaHalu-main/`. The upstream documentation asks users to
+cite the DiaHalu paper. No separate DiaHalu dataset license is included here, so
+check the upstream project's current terms before redistributing the benchmark or
+any derived dataset.
+
 ## Citation
 
 Citation information will be added here once the paper's final bibliographic details are available.
