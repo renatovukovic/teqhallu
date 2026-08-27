@@ -56,6 +56,22 @@ dialhalu_test_task_oriented_sqlite_pipeline_plus_direct_value_examples_gpt4_conf
 	return_column_values=True,
 )
 
+dialhalu_test_task_oriented_baseline_gemini_15pro_config = hallucination_detection_config(
+	model_name = "gemini1.5-pro",
+	dataset = "DiaHalu",
+	tasktype = "Task-oriented Style",
+	splits = ["test"],
+	prompt_name="baseline_dialhalu"
+)
+
+dialhalu_test_task_oriented_baseline_gpt4_config = hallucination_detection_config(
+	model_name = "gpt-4-0613",
+	dataset = "DiaHalu",
+	tasktype = "Task-oriented Style",
+	splits = ["test"],
+	prompt_name="baseline_dialhalu"
+)
+
 #### DiaHalu prediction configs ####
 
 ## model "gemini2.5-flash" ##
